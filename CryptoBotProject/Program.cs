@@ -1,10 +1,11 @@
 ﻿namespace CryptoBotProject
 {
-    internal class Program
+    class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            WorkProcessor workProcessor = WorkProcessor.Instance;
+            workProcessor.Start();
         }
     }
 }
