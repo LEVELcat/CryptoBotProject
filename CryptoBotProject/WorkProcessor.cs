@@ -24,7 +24,7 @@ namespace CryptoBotProject
 
         }
 
-        public void Start()
+        public Task Start()
         {
             throw new NotImplementedException();
         }
