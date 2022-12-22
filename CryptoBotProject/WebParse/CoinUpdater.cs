@@ -42,7 +42,6 @@ namespace CryptoBotProject.WebParse
 
         private void Start()
         {
-
             taskForCycle = DBUpdateCycle;
             Cycle();
         }
@@ -55,7 +54,6 @@ namespace CryptoBotProject.WebParse
             Console.WriteLine("CoinUpdater Stop");
         }
 
-
         private async void Cycle()
         {
             while(taskForCycle != null)
@@ -67,7 +65,6 @@ namespace CryptoBotProject.WebParse
                 await clock;
             }
         }
-
 
         public async void DBUpdateCycle()
         {
