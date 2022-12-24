@@ -77,6 +77,7 @@ namespace CryptoBotProject.Bot
 
             Console.WriteLine(ErrorMessage);
             return Task.CompletedTask;
+            //commit??
         }
     }
 }
