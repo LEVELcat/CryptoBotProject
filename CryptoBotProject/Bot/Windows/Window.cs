@@ -13,17 +13,12 @@ namespace CryptoBotProject.Bot.Windows
 {
     abstract class Window
     {
-
-
-
-
-
         public Window()
         {
 
         }
 
-        public virtual void WindowsInteract(Message message)
+        public virtual void WindowsInteract(Update update)
         {
 
         }
@@ -33,7 +28,7 @@ namespace CryptoBotProject.Bot.Windows
     {
         public StartWindow() { }
 
-        public override void WindowsInteract(Message message)
+        public override void WindowsInteract(Update update)
         {
             
         }
