@@ -1,4 +1,7 @@
-﻿namespace CryptoBotProject.Bot
+﻿using CryptoBotProject.Bot.Windows;
+using Telegram.Bot.Types;
+
+namespace CryptoBotProject.Bot
 {
     public class Seance
     {
@@ -10,6 +13,21 @@
                 instances.Add(id, new Seance());
 
             return instances[id];
+        }
+
+        static TimeSpan AfkTime => TimeSpan.FromHours(1);
+
+        private Window activeWindow;
+        
+        private Seance() 
+        {
+            activeWindow = new Window();
+        }
+
+
+        public void SendMessage(Message message)
+        {
+
         }
 
 
