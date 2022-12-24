@@ -1,4 +1,5 @@
 ﻿using CryptoBotProject.Bot.Windows;
+using Telegram.Bot;
 using Telegram.Bot.Types;
 
 namespace CryptoBotProject.Bot
@@ -36,6 +37,7 @@ namespace CryptoBotProject.Bot
                     }
                     foreach(var index in indexes)
                     {
+                        instances[index].EndSeance(index);
                         instances.Remove(index);
                     }
                 }
@@ -44,11 +46,16 @@ namespace CryptoBotProject.Bot
 
         private Window activeWindow;
 
-        private DateTime lastDateTimeUpdate;
+        private DateTime lastDateTimeUpdate = DateTime.Now;
         
         private Seance() 
         {
             activeWindow = new StartWindow();
+        }
+
+        private async void EndSeance(long chatId)
+        {
+            await TelegramBot.Instance.BotClient.SendTextMessageAsync(chatId: chatId, "Сеанс окончен");
         }
 
         public async void SendUpdate(Update update)

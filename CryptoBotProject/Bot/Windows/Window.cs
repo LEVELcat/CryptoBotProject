@@ -26,11 +26,31 @@ namespace CryptoBotProject.Bot.Windows
 
     class StartWindow : Window
     {
-        public StartWindow() { }
+        public StartWindow() 
+        {
+
+        }
 
         public override void WindowsInteract(Update update)
         {
-            
+            if (update.Message is not Message) return;
+
+            TelegramBot.Instance.BotClient.SendTextMessageAsync(
+                chatId: update.Message.Chat.Id,
+                text: this.ToString()
+                );
         }
+    }
+
+    class TestWindow : Window
+    {
+        public TestWindow() { }
+
+        public override void WindowsInteract(Update update)
+        {
+            base.WindowsInteract(update);
+        }
+
+
     }
 }

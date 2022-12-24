@@ -24,9 +24,14 @@ namespace CryptoBotProject
 
         }
 
-        public Task Start()
+        public async Task Start()
         {
-            throw new NotImplementedException();
+            TelegramBot.Start();
+
+            while(true)
+            {
+                await Task.Delay(TimeSpan.FromDays(1000));
+            }
         }
     }
 }

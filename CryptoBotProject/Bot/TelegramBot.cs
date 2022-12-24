@@ -23,20 +23,20 @@ namespace CryptoBotProject.Bot
             }
         }
 
-        private TelegramBotClient botClient;
+        public TelegramBotClient BotClient { get; private set; }
 
         protected TelegramBot()
         {
 
         }
 
-        public static void Start(string token = "1706882056:AAFfk4F_ZWZ3_h1Mx44SimSO_5JxQHAIKRM")//TODO: REMOVE TOKEN
+        public async static void Start(string token = "1706882056:AAFfk4F_ZWZ3_h1Mx44SimSO_5JxQHAIKRM")//TODO: REMOVE TOKEN
         {
-            Instance.botClient = new TelegramBotClient(token);
+            Instance.BotClient = new TelegramBotClient(token);
             Instance.Start();
         }
 
-        private void Start()
+        private async void Start()
         {
             using CancellationTokenSource cts = new CancellationTokenSource();
 
@@ -45,11 +45,13 @@ namespace CryptoBotProject.Bot
                 AllowedUpdates = Array.Empty<UpdateType>()
             };
 
-            Instance.botClient.StartReceiving(
+            Instance.BotClient.StartReceiving(
                 updateHandler: HandleUpdateAsync,
                 pollingErrorHandler: HandlePollingErrorAsync,
                 receiverOptions: receiverOptions,
                 cancellationToken: cts.Token);
+
+            Console.WriteLine($"Start listening for @{(await BotClient.GetMeAsync()).Username}");
         }
 
 
