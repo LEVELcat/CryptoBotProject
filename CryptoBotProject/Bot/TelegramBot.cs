@@ -30,7 +30,7 @@ namespace CryptoBotProject.Bot
 
         }
 
-        public async static void Start(string token = "1706882056:AAFfk4F_ZWZ3_h1Mx44SimSO_5JxQHAIKRM")//TODO: REMOVE TOKEN
+        public async static void Start(string token = "5901716200:AAHDRRygf7zl260udKhmczgkADVzqaLll6Y")//TODO: REMOVE TOKEN
         {
             Instance.BotClient = new TelegramBotClient(token);
             Instance.Start();

@@ -30,7 +30,7 @@ namespace CryptoBotProject
 
             while(true)
             {
-                await Task.Delay(TimeSpan.FromDays(1000));
+                await Task.Delay(new TimeSpan(-1));
             }
         }
     }

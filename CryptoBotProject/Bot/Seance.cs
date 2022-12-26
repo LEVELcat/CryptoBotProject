@@ -13,7 +13,7 @@ namespace CryptoBotProject.Bot
         public static Seance GetSeance(long id)
         {
             if (instances.ContainsKey(id) == false)
-                instances.Add(id, new Seance());
+                instances.Add(id, new Seance(id));
 
             return instances[id];
         }
@@ -48,9 +48,9 @@ namespace CryptoBotProject.Bot
 
         private DateTime lastDateTimeUpdate = DateTime.Now;
         
-        private Seance() 
+        private Seance(long id) 
         {
-            activeWindow = new StartWindow();
+            activeWindow = new StartWindow(id);
         }
 
         private async void EndSeance(long chatId)
