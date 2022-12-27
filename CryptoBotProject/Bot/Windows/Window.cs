@@ -33,7 +33,8 @@ namespace CryptoBotProject.Bot.Windows
             InlineKeyboardButton.WithCallbackData("Test1", "Test1CallBack")
         };
 
-        int lastMessageId;
+        int chatId = 0;
+        int lastMessageId = 0;
 
         public StartWindow(long id)
         {
@@ -45,9 +46,35 @@ namespace CryptoBotProject.Bot.Windows
                 );
         }
 
+        ~StartWindow()
+        {
+            try
+            {
+                TelegramBot.Instance.BotClient.DeleteMessageAsync(
+                chatId: chatId,
+                messageId: lastMessageId
+                );
+            }
+            catch
+            {
+
+            }
+        }
+
         public override void WindowsInteract(Update update)
         {
-            if (update.CallbackQuery is not CallbackQuery) return;
+            if (update.CallbackQuery is not CallbackQuery)
+            {
+                if (update.Message is Message)
+                {
+
+                }
+
+                return;
+            }
+
+                
+
 
             long id = update.CallbackQuery.From.Id;
 
