@@ -4,19 +4,31 @@ using Telegram.Bot.Types;
 
 namespace CryptoBotProject.Bot
 {
-    public class Seance
+    public class ActiveChat
     {
-        private static Dictionary<long, Seance> instances = new Dictionary<long, Seance>();
+        private static Dictionary<long, ActiveChat> instances = new Dictionary<long, ActiveChat>();
 
-        private static TimeSpan AfkTime => TimeSpan.FromHours(1);
-
-        public static Seance GetSeance(long id)
+        public static ActiveChat GetChat(long ChatId)
         {
-            if (instances.ContainsKey(id) == false)
-                instances.Add(id, new Seance(id));
+            if (instances.ContainsKey(ChatId) == false)
+                instances.Add(ChatId, new ActiveChat(ChatId));
 
-            return instances[id];
+            return instances[ChatId];
         }
+
+        private static TimeSpan AfkTime => TimeSpan.FromHours(24);
+
+        private Dictionary<int, Window> activeWindows = new Dictionary<int, Window>();
+
+        private long chatId = -1;
+
+        private DateTime lastDateTimeUpdate = DateTime.Now;
+
+        private ActiveChat(long id)
+        {
+            this.chatId = id;
+        }
+
 
         public static async Task CheckTimeoutSeances()
         {
@@ -44,14 +56,8 @@ namespace CryptoBotProject.Bot
             }
         }
 
-        private Window activeWindow;
-
-        private DateTime lastDateTimeUpdate = DateTime.Now;
         
-        private Seance(long id) 
-        {
-            activeWindow = new StartWindow(id);
-        }
+        
 
         private async void EndSeance(long chatId)
         {
@@ -61,7 +67,21 @@ namespace CryptoBotProject.Bot
         public async void SendUpdate(Update update)
         {
             lastDateTimeUpdate = DateTime.UtcNow;
-            await Task.Run(() => activeWindow.WindowsInteract(update));
+
+            if (activeWindows == null) activeWindows = new Dictionary<int, Window>();
+
+            if (update.Message is Message)
+            {
+                if (update.Message.Text != null && update.Message.Text[0] == '/')
+                {
+                    switch (update.Message.Text) 
+                    {
+                        case "/start":
+                            activeWindows.Add(-1, new StartWindow(chatId));
+                            return;
+                    }
+                }
+            }
         }
     }
 }

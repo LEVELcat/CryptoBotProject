@@ -60,10 +60,10 @@ namespace CryptoBotProject.Bot
             switch(update.Type)
             {
                 case UpdateType.Message:
-                    Seance.GetSeance(update.Message.Chat.Id).SendUpdate(update);
+                    ActiveChat.GetChat(update.Message.Chat.Id).SendUpdate(update);
                     break;
                 case UpdateType.CallbackQuery:
-                    Seance.GetSeance(update.CallbackQuery.From.Id).SendUpdate(update);
+                    ActiveChat.GetChat(update.CallbackQuery.From.Id).SendUpdate(update);
                     break;
             }
         }
