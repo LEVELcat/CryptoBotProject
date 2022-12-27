@@ -24,33 +24,52 @@ namespace CryptoBotProject.Bot.Windows
     {
         static InlineKeyboardButton[] buttons = 
         {
-            InlineKeyboardButton.WithCallbackData("Test1", "Test1CallBack"),
-            InlineKeyboardButton.WithCallbackData("Test2", "Test2CallBack")
+            InlineKeyboardButton.WithCallbackData("Test1", "Test1CallBack")
         };
+
+        static InlineKeyboardButton[] buttons1 =
+        {
+            InlineKeyboardButton.WithCallbackData("Test1", "Test1CallBack"),
+            InlineKeyboardButton.WithCallbackData("Test1", "Test1CallBack")
+        };
+
+        int lastMessageId;
 
         public StartWindow(long id)
         {
             TelegramBot.Instance.BotClient.SendTextMessageAsync(
                 chatId: id,
                 text: "Это стартовое окно",
-                parseMode: ParseMode.Html,
+                parseMode: ParseMode.Markdown,
                 replyMarkup: new InlineKeyboardMarkup(buttons)
                 );
         }
 
         public override void WindowsInteract(Update update)
         {
-            if (update.Message is not Message) return;
+            if (update.CallbackQuery is not CallbackQuery) return;
 
-            //TelegramBot.Instance.BotClient.SendTextMessageAsync(
-            //    chatId: update.Message.Chat.Id,
-            //    text: this.ToString()
-            //    );
+            long id = update.CallbackQuery.From.Id;
 
+            lastMessageId = update.CallbackQuery.Message.MessageId;
 
+            if (update.CallbackQuery.Data == "Test1CallBack")
+            {
+                //TelegramBot.Instance.BotClient.SendTextMessageAsync(
+                //    chatId: id,
+                //    text: "Это стартовое окно",
+                //    parseMode: ParseMode.Markdown,
+                //    replyMarkup: new InlineKeyboardMarkup(buttons)
+                //    );
 
+                TelegramBot.Instance.BotClient.EditMessageTextAsync(
+                    chatId: id,
+                    messageId: lastMessageId,
+                    text: "Нажата кнопка",
+                    replyMarkup: new InlineKeyboardMarkup(buttons1)
+                    );
 
-
+            }
         }
     }
 
