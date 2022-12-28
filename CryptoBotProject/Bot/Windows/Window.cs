@@ -16,7 +16,7 @@ namespace CryptoBotProject.Bot.Windows
 
         public virtual void WindowsInteract(Update update)
         {
-
+             
         }
     }
 }
