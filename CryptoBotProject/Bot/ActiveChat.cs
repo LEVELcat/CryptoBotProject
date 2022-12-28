@@ -29,7 +29,6 @@ namespace CryptoBotProject.Bot
             this.chatId = id;
         }
 
-
         public static async Task CheckTimeoutSeances()
         {
             while (true)
