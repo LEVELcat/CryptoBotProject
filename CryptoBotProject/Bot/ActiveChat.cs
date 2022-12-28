@@ -17,6 +17,7 @@ namespace CryptoBotProject.Bot
         }
 
         private static TimeSpan AfkTime => TimeSpan.FromHours(24);
+        //private static TimeSpan AfkTime => TimeSpan.FromSeconds(10);
 
         private Dictionary<int, Window> activeWindows = new Dictionary<int, Window>();
 
@@ -29,6 +30,7 @@ namespace CryptoBotProject.Bot
             this.chatId = id;
         }
 
+        
         public static async Task CheckTimeoutSeances()
         {
             while (true)
