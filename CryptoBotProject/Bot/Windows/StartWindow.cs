@@ -54,6 +54,9 @@ namespace CryptoBotProject.Bot.Windows
                 case "StartWindow_FAQ":
                     ActiveChat.GetChat(ChatId).CreateWindow(new InformationWindow(ChatId));
                     break;
+                case "StartWindow_Balance":
+                    ActiveChat.GetChat(ChatId).CreateWindow(new BalanceWindow(ChatId));
+                    break;
             }
         }
     }
