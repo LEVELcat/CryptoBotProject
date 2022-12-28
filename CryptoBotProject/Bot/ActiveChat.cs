@@ -76,7 +76,8 @@ namespace CryptoBotProject.Bot
                     {
                         if (update.Message.Text.Split(' ')[1] == "admin")
                         {
-
+                            Window buf = new Windows.ManagersWindow.StartManagerWindow(chatId);
+                            activeWindows.Add(buf.WindowMessageId, buf);
                         }
                         return;
                     }
