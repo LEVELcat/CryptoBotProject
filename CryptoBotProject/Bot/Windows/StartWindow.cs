@@ -60,6 +60,9 @@ namespace CryptoBotProject.Bot.Windows
                 case "StartWindow_GetCryptoCoins":
                     ActiveChat.GetChat(ChatId).CreateWindow(new CryptoListWindow(ChatId));
                     break;
+                case "StartWindow_Settings":
+                    ActiveChat.GetChat(ChatId).CreateWindow(new SettingsWindow(ChatId));
+                    break;
             }
         }
     }

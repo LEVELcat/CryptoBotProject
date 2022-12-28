@@ -72,6 +72,15 @@ namespace CryptoBotProject.Bot
 
                 if (update.Message is Message && update.Message.Text != null && update.Message.Text[0] == '/')
                 {
+                    if (update.Message.Text.Contains("/manager "))
+                    {
+                        if (update.Message.Text.Split(' ')[1] == "admin")
+                        {
+
+                        }
+                        return;
+                    }
+
                     switch (update.Message.Text)
                     {
                         case "/start" or "/menu":
