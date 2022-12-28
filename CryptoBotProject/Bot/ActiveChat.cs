@@ -84,10 +84,11 @@ namespace CryptoBotProject.Bot
             {
                 Console.WriteLine(e.ToString() + "\n" + e.Message);
             }
+        }
 
-
-
-
+        public void CreateWindow(Window createdWindows)
+        {
+            activeWindows.Add(createdWindows.WindowMessageId, createdWindows);
         }
     }
 }

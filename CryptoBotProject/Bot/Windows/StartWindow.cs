@@ -17,7 +17,7 @@ namespace CryptoBotProject.Bot.Windows
 
         public StartWindow(long chatId)
         {
-            this.chatId = chatId;
+            this.ChatId = chatId;
 
             WindowMessageId = TelegramBot.Instance.BotClient.SendTextMessageAsync(
                 chatId: chatId,
@@ -32,13 +32,13 @@ namespace CryptoBotProject.Bot.Windows
             try
             {
                 TelegramBot.Instance.BotClient.DeleteMessageAsync(
-                chatId: chatId,
+                chatId: ChatId,
                 messageId: WindowMessageId
                 );
             }
-            catch
+            catch (Exception e)
             {
-
+                Console.WriteLine(e.ToString() + "\n" + e.Message);
             }
         }
 
