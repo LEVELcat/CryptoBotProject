@@ -23,20 +23,20 @@ namespace CryptoBotProject.Bot
             }
         }
 
-        private TelegramBotClient botClient;
+        public TelegramBotClient BotClient { get; private set; }
 
         protected TelegramBot()
         {
 
         }
 
-        public static void Start(string token = "1706882056:AAFfk4F_ZWZ3_h1Mx44SimSO_5JxQHAIKRM")//TODO: REMOVE TOKEN
+        public async static void Start(string token = "5901716200:AAHDRRygf7zl260udKhmczgkADVzqaLll6Y")//TODO: REMOVE TOKEN
         {
-            Instance.botClient = new TelegramBotClient(token);
+            Instance.BotClient = new TelegramBotClient(token);
             Instance.Start();
         }
 
-        private void Start()
+        private async void Start()
         {
             using CancellationTokenSource cts = new CancellationTokenSource();
 
@@ -45,11 +45,13 @@ namespace CryptoBotProject.Bot
                 AllowedUpdates = Array.Empty<UpdateType>()
             };
 
-            Instance.botClient.StartReceiving(
+            Instance.BotClient.StartReceiving(
                 updateHandler: HandleUpdateAsync,
                 pollingErrorHandler: HandlePollingErrorAsync,
                 receiverOptions: receiverOptions,
                 cancellationToken: cts.Token);
+
+            Console.WriteLine($"Start listening for @{(await BotClient.GetMeAsync()).Username}");
         }
 
 
@@ -58,10 +60,10 @@ namespace CryptoBotProject.Bot
             switch(update.Type)
             {
                 case UpdateType.Message:
-                    Seance.GetSeance(update.Message.Chat.Id).SendUpdate(update);
+                    ActiveChat.GetChat(update.Message.Chat.Id).SendUpdate(update);
                     break;
                 case UpdateType.CallbackQuery:
-                    Seance.GetSeance(update.CallbackQuery.From.Id).SendUpdate(update);
+                    ActiveChat.GetChat(update.CallbackQuery.From.Id).SendUpdate(update);
                     break;
             }
         }
@@ -77,6 +79,7 @@ namespace CryptoBotProject.Bot
 
             Console.WriteLine(ErrorMessage);
             return Task.CompletedTask;
+            //commit??
         }
     }
 }
