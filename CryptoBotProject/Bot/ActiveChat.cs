@@ -56,9 +56,6 @@ namespace CryptoBotProject.Bot
             }
         }
 
-
-
-
         private async void EndSeance(long chatId)
         {
             await TelegramBot.Instance.BotClient.SendTextMessageAsync(chatId: chatId, "Сеанс окончен");
