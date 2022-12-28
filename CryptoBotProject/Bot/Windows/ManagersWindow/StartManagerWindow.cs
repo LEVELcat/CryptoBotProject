@@ -50,16 +50,16 @@ namespace CryptoBotProject.Bot.Windows.ManagersWindow
             switch (update.CallbackQuery.Data)
             {
                 case "StartManagerWindow_StatusOfWithdrawalRequests":
-                    //ActiveChat.GetChat(ChatId).CreateWindow(new InformationWindow(ChatId));
+                    ActiveChat.GetChat(ChatId).CreateWindow(new StatusOfWithdrawalWindow(ChatId));
                     break;
                 case "StartManagerWindow_StatusOfReplenishmentRequests":
-                    //ActiveChat.GetChat(ChatId).CreateWindow(new BalanceWindow(ChatId));
+                    ActiveChat.GetChat(ChatId).CreateWindow(new StatusOfReplenishmentWindow(ChatId));
                     break;
                 case "StartManagerWindow_GetClients":
-                    //ActiveChat.GetChat(ChatId).CreateWindow(new CryptoListWindow(ChatId));
+                    ActiveChat.GetChat(ChatId).CreateWindow(new ClientWindow(ChatId));
                     break;
                 case "StartManagerWindow_GetSellBuys":
-                    //ActiveChat.GetChat(ChatId).CreateWindow(new SettingsWindow(ChatId));
+                    ActiveChat.GetChat(ChatId).CreateWindow(new BuySellRequestWindow(ChatId));
                     break;
             }
         }
