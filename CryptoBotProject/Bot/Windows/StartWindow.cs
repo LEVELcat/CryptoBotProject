@@ -49,9 +49,11 @@ namespace CryptoBotProject.Bot.Windows
                 return;
             }
 
-            if (update.CallbackQuery.Data == "Test1CallBack")
+            switch(update.CallbackQuery.Data) 
             {
-
+                case "StartWindow_FAQ":
+                    ActiveChat.GetChat(ChatId).CreateWindow(new InformationWindow(ChatId));
+                    break;
             }
         }
     }

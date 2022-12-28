@@ -72,7 +72,7 @@ namespace CryptoBotProject.Bot
                 {
                     switch (update.Message.Text)
                     {
-                        case "/start":
+                        case "/start" or "/menu":
                             Window buf = new StartWindow(chatId);
                             activeWindows.Add(buf.WindowMessageId, buf);
                             return;
