@@ -17,7 +17,7 @@ namespace CryptoBotProject.Bot.Windows
 
         public StartWindow(long chatId)
         {
-            this.chatId = chatId;
+            this.ChatId = chatId;
 
             WindowMessageId = TelegramBot.Instance.BotClient.SendTextMessageAsync(
                 chatId: chatId,
@@ -32,13 +32,13 @@ namespace CryptoBotProject.Bot.Windows
             try
             {
                 TelegramBot.Instance.BotClient.DeleteMessageAsync(
-                chatId: chatId,
+                chatId: ChatId,
                 messageId: WindowMessageId
                 );
             }
-            catch
+            catch (Exception e)
             {
-
+                Console.WriteLine(e.ToString() + "\n" + e.Message);
             }
         }
 
@@ -49,9 +49,20 @@ namespace CryptoBotProject.Bot.Windows
                 return;
             }
 
-            if (update.CallbackQuery.Data == "Test1CallBack")
+            switch(update.CallbackQuery.Data) 
             {
-
+                case "StartWindow_FAQ":
+                    ActiveChat.GetChat(ChatId).CreateWindow(new InformationWindow(ChatId));
+                    break;
+                case "StartWindow_Balance":
+                    ActiveChat.GetChat(ChatId).CreateWindow(new BalanceWindow(ChatId));
+                    break;
+                case "StartWindow_GetCryptoCoins":
+                    ActiveChat.GetChat(ChatId).CreateWindow(new CryptoListWindow(ChatId));
+                    break;
+                case "StartWindow_Settings":
+                    ActiveChat.GetChat(ChatId).CreateWindow(new SettingsWindow(ChatId));
+                    break;
             }
         }
     }
