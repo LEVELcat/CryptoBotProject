@@ -14,6 +14,9 @@ namespace CryptoBotProject.Bot.Windows
 {
     abstract class Window
     {
+        protected long chatId = 0;
+        public int WindowMessageId { get; protected set; } = 0;
+
         public virtual void WindowsInteract(Update update)
         {
 
@@ -33,17 +36,16 @@ namespace CryptoBotProject.Bot.Windows
             InlineKeyboardButton.WithCallbackData("Test1", "Test1CallBack")
         };
 
-        int chatId = 0;
-        int lastMessageId = 0;
-
-        public StartWindow(long id)
+        public StartWindow(long chatId)
         {
-            TelegramBot.Instance.BotClient.SendTextMessageAsync(
-                chatId: id,
+            this.chatId = chatId;
+
+            WindowMessageId = TelegramBot.Instance.BotClient.SendTextMessageAsync(
+                chatId: chatId,
                 text: "Это стартовое окно",
                 parseMode: ParseMode.Markdown,
                 replyMarkup: new InlineKeyboardMarkup(buttons)
-                );
+                ).Result.MessageId;
         }
 
         ~StartWindow()
@@ -52,7 +54,7 @@ namespace CryptoBotProject.Bot.Windows
             {
                 TelegramBot.Instance.BotClient.DeleteMessageAsync(
                 chatId: chatId,
-                messageId: lastMessageId
+                messageId: WindowMessageId
                 );
             }
             catch
@@ -78,7 +80,7 @@ namespace CryptoBotProject.Bot.Windows
 
             long id = update.CallbackQuery.From.Id;
 
-            lastMessageId = update.CallbackQuery.Message.MessageId;
+            WindowMessageId = update.CallbackQuery.Message.MessageId;
 
             if (update.CallbackQuery.Data == "Test1CallBack")
             {
@@ -91,7 +93,7 @@ namespace CryptoBotProject.Bot.Windows
 
                 TelegramBot.Instance.BotClient.EditMessageTextAsync(
                     chatId: id,
-                    messageId: lastMessageId,
+                    messageId: WindowMessageId,
                     text: "Нажата кнопка",
                     replyMarkup: new InlineKeyboardMarkup(buttons1)
                     );

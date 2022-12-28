@@ -32,7 +32,7 @@ namespace CryptoBotProject.Bot
 
         public static async Task CheckTimeoutSeances()
         {
-            while(true)
+            while (true)
             {
                 await Task.Delay(AfkTime);
 
@@ -40,14 +40,14 @@ namespace CryptoBotProject.Bot
                 {
                     List<long> indexes = new List<long>();
 
-                    foreach(var item in instances)
+                    foreach (var item in instances)
                     {
                         if (item.Value.lastDateTimeUpdate.Add(AfkTime).CompareTo(DateTime.Now) <= 0)
                         {
                             indexes.Add(item.Key);
                         }
                     }
-                    foreach(var index in indexes)
+                    foreach (var index in indexes)
                     {
                         instances[index].EndSeance(index);
                         instances.Remove(index);
@@ -56,8 +56,8 @@ namespace CryptoBotProject.Bot
             }
         }
 
-        
-        
+
+
 
         private async void EndSeance(long chatId)
         {
@@ -66,22 +66,32 @@ namespace CryptoBotProject.Bot
 
         public async void SendUpdate(Update update)
         {
-            lastDateTimeUpdate = DateTime.UtcNow;
-
-            if (activeWindows == null) activeWindows = new Dictionary<int, Window>();
-
-            if (update.Message is Message)
+            try
             {
-                if (update.Message.Text != null && update.Message.Text[0] == '/')
+                lastDateTimeUpdate = DateTime.UtcNow;
+
+                if (activeWindows == null) activeWindows = new Dictionary<int, Window>();
+
+                if (update.Message is Message && update.Message.Text != null && update.Message.Text[0] == '/')
                 {
-                    switch (update.Message.Text) 
+                    switch (update.Message.Text)
                     {
                         case "/start":
-                            activeWindows.Add(-1, new StartWindow(chatId));
+                            Window buf = new StartWindow(chatId);
+                            activeWindows.Add(buf.WindowMessageId, buf);
                             return;
                     }
                 }
+                if (update.CallbackQuery is CallbackQuery callback) activeWindows[callback.Message.MessageId].WindowsInteract(update);
             }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString() + "\n" + e.Message);
+            }
+
+
+
+
         }
     }
 }
