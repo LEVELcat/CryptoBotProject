@@ -21,6 +21,11 @@ namespace CryptoBotProject.Bot
 
         private Dictionary<int, Window> activeWindows = new Dictionary<int, Window>();
 
+        public Window GetWindow<T>()  where T: Window
+        {
+
+        }
+
         private long chatId = -1;
 
         private DateTime lastDateTimeUpdate = DateTime.Now;
