@@ -29,6 +29,10 @@ namespace CryptoBotProject.Bot.Windows
                 replyMarkup: GeneratekeyboardButtonList()
                 ).Result.MessageId;
         }
+        public CryptoListWindow()
+        {
+            throw new Exception("Don't use this constructor");
+        }
         ~CryptoListWindow()
         {
             try

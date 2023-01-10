@@ -26,6 +26,10 @@ namespace CryptoBotProject.Bot.Windows
                 replyMarkup: new InlineKeyboardMarkup(buttons)
                 ).Result.MessageId;
         }
+        public BalanceWindow()
+        {
+            throw new Exception("Don't use this constructor");
+        }
 
         ~BalanceWindow()
         {

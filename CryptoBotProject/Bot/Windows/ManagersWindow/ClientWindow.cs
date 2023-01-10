@@ -29,7 +29,10 @@ namespace CryptoBotProject.Bot.Windows.ManagersWindow
                 replyMarkup: new InlineKeyboardMarkup(buttons)
                 ).Result.MessageId;
         }
-
+        public ClientWindow()
+        {
+            throw new Exception("Don't use this constructor");
+        }
         ~ClientWindow()
         {
             try

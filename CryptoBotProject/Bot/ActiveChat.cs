@@ -1,4 +1,5 @@
 ﻿using CryptoBotProject.Bot.Windows;
+using CryptoBotProject.Bot.Windows.ManagersWindow;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
@@ -19,10 +20,16 @@ namespace CryptoBotProject.Bot
         private static TimeSpan AfkTime => TimeSpan.FromHours(24);
         //private static TimeSpan AfkTime => TimeSpan.FromSeconds(10);
 
-        private Dictionary<int, Window> activeWindows = new Dictionary<int, Window>();
-
-        public Window GetWindow<T>()  where T: Window
+        List<Window> activeWindows = new List<Window>();
+        public Window GetWindow<T>()  where T: Window, new()
         {
+            foreach(var window in activeWindows)
+            {
+                if (window is T) return window;
+            }
+            T newWindow = (T)Activator.CreateInstance(typeof(T), new object[] {chatId});
+            activeWindows.Add(newWindow);
+            return newWindow;
 
         }
 
@@ -73,7 +80,7 @@ namespace CryptoBotProject.Bot
             {
                 lastDateTimeUpdate = DateTime.UtcNow;
 
-                if (activeWindows == null) activeWindows = new Dictionary<int, Window>();
+                if (activeWindows == null) activeWindows = new List<Window>();
 
                 if (update.Message is Message && update.Message.Text != null && update.Message.Text[0] == '/')
                 {
@@ -81,8 +88,7 @@ namespace CryptoBotProject.Bot
                     {
                         if (update.Message.Text.Split(' ')[1] == "admin")
                         {
-                            Window buf = new Windows.ManagersWindow.StartManagerWindow(chatId);
-                            activeWindows.Add(buf.WindowMessageId, buf);
+                            GetWindow<StartManagerWindow>();
                         }
                         return;
                     }
@@ -90,6 +96,7 @@ namespace CryptoBotProject.Bot
                     switch (update.Message.Text)
                     {
                         case "/start" or "/menu":
+                            GetWindow<StartWindow>();
                             Window buf = new StartWindow(chatId);
                             activeWindows.Add(buf.WindowMessageId, buf);
                             return;

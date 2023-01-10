@@ -29,6 +29,10 @@ namespace CryptoBotProject.Bot.Windows.ManagersWindow
                 replyMarkup: new InlineKeyboardMarkup(buttons)
                 ).Result.MessageId;
         }
+        public BuySellRequestWindow()
+        {
+            throw new Exception("Don't use this constructor");
+        }
 
         ~BuySellRequestWindow()
         {
