@@ -56,16 +56,16 @@ namespace CryptoBotProject.Bot.Windows
             switch(update.CallbackQuery.Data) 
             {
                 case "StartWindow_FAQ":
-                    ActiveChat.GetChat(ChatId).CreateWindow(new InformationWindow(ChatId));
+                    ActiveChat.GetChat(ChatId).ShowWindow<InformationWindow>();
                     break;
                 case "StartWindow_Balance":
-                    ActiveChat.GetChat(ChatId).CreateWindow(new BalanceWindow(ChatId));
+                    ActiveChat.GetChat(ChatId).ShowWindow<BalanceWindow>();
                     break;
                 case "StartWindow_GetCryptoCoins":
-                    ActiveChat.GetChat(ChatId).CreateWindow(new CryptoListWindow(ChatId));
+                    ActiveChat.GetChat(ChatId).ShowWindow<CryptoListWindow>();
                     break;
                 case "StartWindow_Settings":
-                    ActiveChat.GetChat(ChatId).CreateWindow(new SettingsWindow(ChatId));
+                    ActiveChat.GetChat(ChatId).ShowWindow<SettingsWindow>();
                     break;
             }
         }

@@ -21,15 +21,15 @@ namespace CryptoBotProject.Bot
         //private static TimeSpan AfkTime => TimeSpan.FromSeconds(10);
 
         List<Window> activeWindows = new List<Window>();
-        public Window GetWindow<T>()  where T: Window, new()
+        public void ShowWindow<T>()  where T: Window, new()
         {
             foreach(var window in activeWindows)
             {
-                if (window is T) return window;
+                //if (window is T) return window;
             }
             T newWindow = (T)Activator.CreateInstance(typeof(T), new object[] {chatId});
             activeWindows.Add(newWindow);
-            return newWindow;
+            //return newWindow;
 
         }
 
@@ -88,7 +88,7 @@ namespace CryptoBotProject.Bot
                     {
                         if (update.Message.Text.Split(' ')[1] == "admin")
                         {
-                            GetWindow<StartManagerWindow>();
+                            ShowWindow<StartManagerWindow>();
                         }
                         return;
                     }
@@ -96,23 +96,16 @@ namespace CryptoBotProject.Bot
                     switch (update.Message.Text)
                     {
                         case "/start" or "/menu":
-                            GetWindow<StartWindow>();
-                            Window buf = new StartWindow(chatId);
-                            activeWindows.Add(buf.WindowMessageId, buf);
+                            ShowWindow<StartWindow>();
                             return;
                     }
                 }
-                if (update.CallbackQuery is CallbackQuery callback) activeWindows[callback.Message.MessageId].WindowsInteract(update);
+                if (update.CallbackQuery is CallbackQuery callback) activeWindows.Where(x => x.WindowMessageId == callback.Message.MessageId).First().WindowsInteract(update);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.ToString() + "\n" + e.Message);
             }
-        }
-
-        public void CreateWindow(Window createdWindows)
-        {
-            activeWindows.Add(createdWindows.WindowMessageId, createdWindows);
         }
     }
 }
