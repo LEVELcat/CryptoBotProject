@@ -11,5 +11,7 @@ namespace CryptoBotProject.Bot.Windows
         {
 
         }
+
+        public abstract void ShowMessage();
     }
 }
