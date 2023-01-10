@@ -21,23 +21,43 @@ namespace CryptoBotProject.Bot
         }
 
         private LocalRuntimeDB()
-        { }
-
-        public bool GetData( )
         {
 
         }
 
-        public static MySqlCommand BuildMySqlCommand(string ,)
+        public void ExecuteNonQuaryCommand(string procedureName, params (string, object)[] parameters)
+        {
+            MySqlConnection connection = GetDBConnection();
+            connection.Open();
+
+            BuildMySqlCommand(procedureName, parameters).ExecuteNonQuery();
+        }
+        public void ExecuteReaderCommand(out MySqlDataReader dataReader, string procedureName, params (string, object)[] parameters)
+        {
+            MySqlConnection connection = GetDBConnection();
+            connection.Open();
+
+            dataReader = BuildMySqlCommand(procedureName, parameters).ExecuteReader();
+        }
+
+        MySqlConnection GetDBConnection(string host = "localhost", int port = 3306, string database = "brokebd", string username = "root", string password = "Hupihi48chiz666")
+        {
+            String connString = $"Server={host};Database={database};port={port};User Id={username};password={password}";
+            return new MySqlConnection(connString);
+        }
+        private static MySqlCommand BuildMySqlCommand(string procedureName, params (string, object)[] parameters)
         {
             MySqlCommand cmd = new MySqlCommand();
 
+            cmd.CommandText = procedureName;
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
-
-
-
+            foreach(var param in parameters)
+            {
+                cmd.Parameters.AddWithValue(param.Item1, param.Item2);
+                cmd.Parameters[param.Item1].Direction = System.Data.ParameterDirection.Input;
+            }
+            return cmd;
         }
-
-
     }
 }
