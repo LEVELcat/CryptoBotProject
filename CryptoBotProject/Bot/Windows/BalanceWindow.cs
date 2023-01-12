@@ -1,4 +1,6 @@
-﻿using Telegram.Bot;
+﻿using MySql.Data.MySqlClient;
+using MySql.Data.Types;
+using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
@@ -15,13 +17,29 @@ namespace CryptoBotProject.Bot.Windows
             InlineKeyboardButton.WithCallbackData("Пополнение баланса", "BalanceWindow_ReplenishmentOfBalance")
         };
 
+        enum StateMent
+        {
+            Balance,
+            FullBalance,
+            Withdraw,
+            Replenishment
+        }
+
         public BalanceWindow(long chatId)
         {
             this.ChatId = chatId;
 
+            LocalRuntimeDB.Instance.ExecuteReaderCommand(out MySqlDataReader dataReader, 
+                                                         "GetUSDTBalance", 
+                                                        ("ChatId", this.ChatId)
+                                                        );
+            var usdtBalance = dataReader["USDT_Balance"].ToString();
+
+            dataReader.DisposeAsync();
+
             WindowMessageId = TelegramBot.Instance.BotClient.SendTextMessageAsync(
                 chatId: chatId,
-                text: "Это окно с балансом",
+                text: "Баланс USDT: " + usdtBalance,
                 parseMode: ParseMode.Markdown,
                 replyMarkup: new InlineKeyboardMarkup(buttons)
                 ).Result.MessageId;
