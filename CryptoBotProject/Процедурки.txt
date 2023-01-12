@@ -8,6 +8,8 @@ Query:
 Anser:
 ColumName1 , ColumName2 //1 or >1 Rows
 
+Why this need?:
+<Reason>
 ___________________________________________
 
 Q:
@@ -16,3 +18,8 @@ GetUSDTBalance
 
 A:
 USDT_Balance //1 Row
+
+W:
+Получаю баланс пользователя в usdt
+
+______________________________________________
