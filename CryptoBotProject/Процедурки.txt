@@ -1,1 +1,18 @@
-﻿
+﻿Формат процедурок:
+
+Query:
+<ProcedureName>
+("paramName1", Type)
+("paramName2", Type)
+
+Anser:
+ColumName1 , ColumName2 //1 or >1 Rows
+
+___________________________________________
+
+Q:
+GetUSDTBalance
+"ChatId", long
+
+A:
+USDT_Balance //1 Row
