@@ -1,5 +1,6 @@
 ﻿using CryptoBotProject.Bot.Windows;
 using CryptoBotProject.Bot.Windows.ManagersWindow;
+using MySql.Data.MySqlClient;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
@@ -88,6 +89,15 @@ namespace CryptoBotProject.Bot
                 {
                     if (update.Message.Text.Contains("/manager "))
                     {
+                        LocalRuntimeDB.Instance.ExecuteReaderCommand(out MySqlDataReader dataReader,
+                                             "CheckModerator",
+                                            ("Username", update.Message.From.Username)
+                                            );
+                        var usdtBalance = dataReader["USDT_Balance"].ToString();
+
+                        dataReader.DisposeAsync();
+
+
                         if (update.Message.Text.Split(' ')[1] == "admin")
                         {
                             ShowWindow<StartManagerWindow>();

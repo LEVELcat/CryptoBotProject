@@ -12,6 +12,9 @@ Why this need?:
 <Reason>
 ___________________________________________
 
+"CLIENT"
+___________________________________________
+
 BalanceWindow.cs
 ___________________________________________
 
@@ -72,6 +75,24 @@ CoinName //>1 Row
 
 W:
 Получаю список коинов
+___________________________________________
+
+Q:
+GetCryptoCoin
+"Name", string
+
+A:
+Name , Price, PriceLow24h, PriceHihg24h, Volume24h, PercentChange24h, PercentChange7d, PercentChange30d, 
+PercentChange3m, PercentChange6m, LastUpdateTime,  //1 Row 
+
+W:
+Получаю инфу по коину
+___________________________________________
+
+"MODERS"
+___________________________________________
+
+StartWindow.cs
 ___________________________________________
 
 Q:
