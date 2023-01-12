@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MySql.Data.MySqlClient;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -24,7 +20,7 @@ namespace CryptoBotProject.Bot.Windows
 
             WindowMessageId = TelegramBot.Instance.BotClient.SendTextMessageAsync(
                 chatId: chatId,
-                text: $"Список криптовалют {debugCurentList}",
+                text: $"Список криптовалют {CurentList}",
                 parseMode: ParseMode.Markdown,
                 replyMarkup: GeneratekeyboardButtonList()
                 ).Result.MessageId;
@@ -57,51 +53,102 @@ namespace CryptoBotProject.Bot.Windows
             switch (update.CallbackQuery.Data)
             {
                 case "CryptoListWindow_BACK":
-                    TelegramBot.Instance.BotClient.EditMessageTextAsync(
-                        chatId: ChatId,
-                        messageId: WindowMessageId,
-                        text: $"Тут лист с криптой №{debugCurentList--}",
-                        replyMarkup: GeneratekeyboardButtonList()
-                        );
-                    break;
-                case "CryptoListWindow_FORWARD":
-                    TelegramBot.Instance.BotClient.EditMessageTextAsync(
-                        chatId: ChatId,
-                        messageId: WindowMessageId,
-                        text: $"Тут лист с криптой №{debugCurentList++}",
-                        replyMarkup: GeneratekeyboardButtonList()
-                        );
-                    break;
-                default:
-                    if(update.CallbackQuery.Data.Contains("CryptoListWindow_"))
                     {
+                        CurentList--;
+
                         TelegramBot.Instance.BotClient.EditMessageTextAsync(
                             chatId: ChatId,
                             messageId: WindowMessageId,
-                            text: $"Тут лист с криптой №{update.CallbackQuery.Data.Split('_')[1]}",
+                            text: $"Список криптовалют ",
                             replyMarkup: GeneratekeyboardButtonList()
+                        );
+                    }
+                    break;
+                case "CryptoListWindow_FORWARD":
+                    {
+                        CurentList++;
+
+                        TelegramBot.Instance.BotClient.EditMessageTextAsync(
+                                                chatId: ChatId,
+                                                messageId: WindowMessageId,
+                                                text: $"Список криптовалют ",
+                                                replyMarkup: GeneratekeyboardButtonList()
+                                                );
+
+                    }
+                    break;
+                default:
+                    {
+                        if (update.CallbackQuery.Data.Contains("CryptoListWindow_"))
+                        {
+                            string coin = update.CallbackQuery.Data.Split('_')[1];
+
+                            LocalRuntimeDB.Instance.ExecuteReaderCommand(out MySqlDataReader dataReader,
+                                "GetCryptoCoin",
+                                ("Name", coin)
                             );
+
+                            string resultText = string.Empty;
+                            resultText += dataReader["Name"];
+                            resultText += "Цена" + dataReader["Price"];
+                            resultText += "Нижайшая цена за 24 часа" + dataReader["PriceLow24h"];
+                            resultText += "Наивысшая цена за 24 часа" + dataReader["PriceHihg24h"];
+                            resultText += "Объем торгов за 24 часа" + dataReader["Volume24h"];
+                            resultText += "Изменение цены за 24 часа" + dataReader["PercentChange24h"];
+                            resultText += "Изменение цены за неделю" + dataReader["PercentChange7d"];
+                            resultText += "Изменение цены за 30 дней" + dataReader["PercentChange30d"];
+                            resultText += "Изменение цены за 3 месяца" + dataReader["PercentChange3m"];
+                            resultText += "Изменение цены за 6 месяцев" + dataReader["PercentChange6m"];
+                            resultText += "Последнее обновление" + dataReader["LastUpdateTime"];
+
+
+
+                            dataReader.Dispose();
+
+                            TelegramBot.Instance.BotClient.EditMessageTextAsync(
+                                chatId: ChatId,
+                                messageId: WindowMessageId,
+                                text: $"Информация о коине " + resultText,
+                                replyMarkup: GeneratekeyboardButtonList()
+                                );
+                        }
                     }
                     break;
             }
         }
 
-        private short debugCurentList = 0;
-        private short debugMaxList = 5;
+        private short CurentList = 0;
         private InlineKeyboardMarkup GeneratekeyboardButtonList()
         {
-            List<InlineKeyboardButton> result = new List<InlineKeyboardButton>();
+            MySqlDataReader dataReader;
 
-            if (debugCurentList > 0) result.Add(buttons[0]);
-
-            for(short index = 1; index <= debugMaxList; index++)
+            do
             {
-                result.Add(InlineKeyboardButton.WithCallbackData($"Coin №{index}", $"CryptoListWindow_{index}"));
+                if (CurentList == 0) CurentList++;
+
+                LocalRuntimeDB.Instance.ExecuteReaderCommand(out dataReader,
+                    "GetCryptoList",
+                    ("Size", 5),
+                    ("Offset", CurentList * 5)
+                    );
+
+                if (dataReader.HasRows == false) CurentList--;
+            } while (dataReader.HasRows);
+
+            List<List<InlineKeyboardButton>> inlineKeyboardButtons = new List<List<InlineKeyboardButton>>();
+            inlineKeyboardButtons.Add(buttons.ToList());
+
+            List<string> strings = new List<string>();
+
+            while (dataReader.Read())
+            {
+                inlineKeyboardButtons.Add(new List<InlineKeyboardButton> { InlineKeyboardButton.WithCallbackData(dataReader["CoinName"].ToString(), "CryptoListWindow_" + dataReader["CoinName"].ToString()) });
+                dataReader.NextResult();
             }
+            dataReader.Dispose();
 
-            if (debugCurentList < debugMaxList) result.Add(buttons[1]);
 
-            return new InlineKeyboardMarkup(result);
+            return new InlineKeyboardMarkup(inlineKeyboardButtons);
         }
 
         public override void ShowMessage()
@@ -110,7 +157,7 @@ namespace CryptoBotProject.Bot.Windows
 
             WindowMessageId = TelegramBot.Instance.BotClient.SendTextMessageAsync(
                 chatId: ChatId,
-                text: $"Это окно криптовалют лист {debugCurentList}",
+                text: $"Это окно криптовалют лист {CurentList}",
                 parseMode: ParseMode.Markdown,
                 replyMarkup: GeneratekeyboardButtonList()
                 ).Result.MessageId;

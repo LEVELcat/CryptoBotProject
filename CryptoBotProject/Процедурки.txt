@@ -12,6 +12,9 @@ Why this need?:
 <Reason>
 ___________________________________________
 
+BalanceWindow.cs
+___________________________________________
+
 Q:
 GetUSDTBalance
 "ChatId", long
@@ -21,7 +24,7 @@ USDT_Balance //1 Row
 
 W:
 Получаю баланс пользователя в usdt
-______________________________________________
+___________________________________________
 
 Q:
 GetFullBalance
@@ -32,7 +35,7 @@ ShortCoinName ,  Count  //>1 Row
 
 W:
 Получаю баланс крипт пользователя
-______________________________________________
+___________________________________________
 
 Q:
 GetStatusOfWithdrawal
@@ -43,7 +46,7 @@ Status , Coutn , Date //>1 Row DESC
 
 W:
 Получаю cтатус вывода средств
-______________________________________________
+___________________________________________
 
 Q:
 GetStatusOfReplenishment
@@ -54,4 +57,31 @@ Status , Coutn , Date //>1 Row DESC
 
 W:
 Получаю cтатус пополнения средств
-______________________________________________
+___________________________________________
+
+CryptoListWindow.cs
+___________________________________________
+
+Q:
+GetCryptoList
+"Size", int
+"Offset" , int
+
+A:
+CoinName //>1 Row 
+
+W:
+Получаю список коинов
+___________________________________________
+
+Q:
+GetCryptoCoin
+"Name", string
+
+A:
+Name , Price, PriceLow24h, PriceHihg24h, Volume24h, PercentChange24h, PercentChange7d, PercentChange30d, 
+PercentChange3m, PercentChange6m, LastUpdateTime,  //1 Row 
+
+W:
+Получаю инфу по коину
+___________________________________________

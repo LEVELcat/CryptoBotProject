@@ -8,12 +8,12 @@ namespace CryptoBotProject.Bot.Windows
 {
     class BalanceWindow : Window
     {
-        static InlineKeyboardButton[] buttons =
+        static InlineKeyboardButton[][] buttons =
         {
-            InlineKeyboardButton.WithCallbackData("Статус заявок на вывод", "BalanceWindow_StatusOfWithdrawalRequests"),
-            InlineKeyboardButton.WithCallbackData("Статус заявок на пополнение", "BalanceWindow_StatusOfReplenishmentRequests"),
-            InlineKeyboardButton.WithCallbackData("Отображение полного списка валют", "BalanceWindow_DisplayFullListOfCurrencies"),
-            InlineKeyboardButton.WithCallbackData("Пополнение баланса", "BalanceWindow_ReplenishmentOfBalance")
+            new InlineKeyboardButton[] { InlineKeyboardButton.WithCallbackData("Статус заявок на вывод", "BalanceWindow_StatusOfWithdrawalRequests") },
+            new InlineKeyboardButton[] { InlineKeyboardButton.WithCallbackData("Статус заявок на пополнение", "BalanceWindow_StatusOfReplenishmentRequests") },
+            new InlineKeyboardButton[] { InlineKeyboardButton.WithCallbackData("Отображение полного списка валют", "BalanceWindow_DisplayFullListOfCurrencies") },
+            new InlineKeyboardButton[] { InlineKeyboardButton.WithCallbackData("Пополнение баланса", "BalanceWindow_ReplenishmentOfBalance") }
         };
 
         enum StateMent

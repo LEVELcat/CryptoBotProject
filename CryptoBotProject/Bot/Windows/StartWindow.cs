@@ -10,7 +10,6 @@ namespace CryptoBotProject.Bot.Windows
         static InlineKeyboardButton[][] buttons =
         {
             new InlineKeyboardButton[] { InlineKeyboardButton.WithCallbackData("Баланс", "StartWindow_Balance") },
-            new InlineKeyboardButton[] { InlineKeyboardButton.WithCallbackData("Баланс", "StartWindow_Balance") },
             new InlineKeyboardButton[] { InlineKeyboardButton.WithCallbackData("Настройки", "StartWindow_Settings") },
             new InlineKeyboardButton[] { InlineKeyboardButton.WithCallbackData("Информация", "StartWindow_FAQ") },
             new InlineKeyboardButton[] { InlineKeyboardButton.WithCallbackData("Криптовалюты", "StartWindow_GetCryptoCoins") }
