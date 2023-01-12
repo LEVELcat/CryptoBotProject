@@ -91,6 +91,21 @@ namespace CryptoBotProject.Bot.Windows
 
         }
 
+        public override void ShowMessage()
+        {
+            int pastMessageId = WindowMessageId;
+
+            WindowMessageId = TelegramBot.Instance.BotClient.SendTextMessageAsync(
+                chatId: ChatId,
+                text: "Это окно с информацией",
+                parseMode: ParseMode.Markdown,
+                replyMarkup: new InlineKeyboardMarkup(buttons)
+                ).Result.MessageId;
+
+            TelegramBot.Instance.BotClient.DeleteMessageAsync(ChatId, pastMessageId);
+
+        }
+
 
 
     }

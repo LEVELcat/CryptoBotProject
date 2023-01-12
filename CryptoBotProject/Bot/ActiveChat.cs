@@ -25,11 +25,11 @@ namespace CryptoBotProject.Bot
         {
             foreach(var window in activeWindows)
             {
-                //if (window is T) return window;
+                if (window is T) window.ShowMessage();
             }
             T newWindow = (T)Activator.CreateInstance(typeof(T), new object[] {chatId});
             activeWindows.Add(newWindow);
-            //return newWindow;
+
 
         }
 

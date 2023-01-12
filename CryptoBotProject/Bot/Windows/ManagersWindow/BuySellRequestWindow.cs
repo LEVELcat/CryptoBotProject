@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Telegram.Bot;
+using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
-using Telegram.Bot.Types;
-using Telegram.Bot;
 
 namespace CryptoBotProject.Bot.Windows.ManagersWindow
 {
@@ -60,6 +55,21 @@ namespace CryptoBotProject.Bot.Windows.ManagersWindow
             {
 
             }
+
+        }
+
+        public override void ShowMessage()
+        {
+            int pastMessageId = WindowMessageId;
+
+            WindowMessageId = TelegramBot.Instance.BotClient.SendTextMessageAsync(
+                chatId: ChatId,
+                text: "Это окно со списком заявок на покупку/продажу крипты клиентов",
+                parseMode: ParseMode.Markdown,
+                replyMarkup: new InlineKeyboardMarkup(buttons)
+                ).Result.MessageId;
+
+            TelegramBot.Instance.BotClient.DeleteMessageAsync(ChatId, pastMessageId);
 
         }
     }
