@@ -21,5 +21,37 @@ USDT_Balance //1 Row
 
 W:
 Получаю баланс пользователя в usdt
+______________________________________________
 
+Q:
+GetFullBalance
+"ChatId", long
+
+A:
+ShortCoinName ,  Count  //>1 Row
+
+W:
+Получаю баланс крипт пользователя
+______________________________________________
+
+Q:
+GetStatusOfWithdrawal
+"ChatId", long
+
+A:
+Status , Coutn , Date //>1 Row DESC
+
+W:
+Получаю cтатус вывода средств
+______________________________________________
+
+Q:
+GetStatusOfReplenishment
+"ChatId", long
+
+A:
+Status , Coutn , Date //>1 Row DESC
+
+W:
+Получаю cтатус пополнения средств
 ______________________________________________

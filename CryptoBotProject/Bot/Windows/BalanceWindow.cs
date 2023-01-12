@@ -1,5 +1,4 @@
 ﻿using MySql.Data.MySqlClient;
-using MySql.Data.Types;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -29,8 +28,8 @@ namespace CryptoBotProject.Bot.Windows
         {
             this.ChatId = chatId;
 
-            LocalRuntimeDB.Instance.ExecuteReaderCommand(out MySqlDataReader dataReader, 
-                                                         "GetUSDTBalance", 
+            LocalRuntimeDB.Instance.ExecuteReaderCommand(out MySqlDataReader dataReader,
+                                                         "GetUSDTBalance",
                                                         ("ChatId", this.ChatId)
                                                         );
             var usdtBalance = dataReader["USDT_Balance"].ToString();
@@ -74,28 +73,81 @@ namespace CryptoBotProject.Bot.Windows
             switch (update.CallbackQuery.Data)
             {
                 case "BalanceWindow_StatusOfWithdrawalRequests":
-                    TelegramBot.Instance.BotClient.EditMessageTextAsync(
-                        chatId: ChatId,
-                        messageId: WindowMessageId,
-                        text: "Тут должно быть заявки на вывод",
-                        replyMarkup: new InlineKeyboardMarkup(buttons)
+                    {
+                        LocalRuntimeDB.Instance.ExecuteReaderCommand(out MySqlDataReader dataReader,
+                        "GetStatusOfWithdrawal",
+                        ("ChatId", this.ChatId)
                         );
-                    break;
+
+                        string result = String.Empty;
+
+                        while (dataReader.Read())
+                        {
+                            result += dataReader["Status"].ToString() + "\t" + dataReader["Count"].ToString() + "\t" + dataReader["Date"] + "\n";
+                            dataReader.NextResult();
+                        }
+                        dataReader.Dispose();
+
+
+                        TelegramBot.Instance.BotClient.EditMessageTextAsync(
+                            chatId: ChatId,
+                            messageId: WindowMessageId,
+                            text: "Заявки на вывод\n" + result,
+                            replyMarkup: new InlineKeyboardMarkup(buttons)
+                            );
+                        break;
+                    }
+
                 case "BalanceWindow_StatusOfReplenishmentRequests":
-                    TelegramBot.Instance.BotClient.EditMessageTextAsync(
-                        chatId: ChatId,
-                        messageId: WindowMessageId,
-                        text: "Тут должно быть заявки на пополнение",
-                        replyMarkup: new InlineKeyboardMarkup(buttons)
+                    {
+                        LocalRuntimeDB.Instance.ExecuteReaderCommand(out MySqlDataReader dataReader,
+                        "GetStatusOfReplenishment",
+                        ("ChatId", this.ChatId)
                         );
+
+                        string result = String.Empty;
+
+                        while (dataReader.Read())
+                        {
+                            result += dataReader["Status"].ToString() + "\t" + dataReader["Count"].ToString() + "\t" + dataReader["Date"] + "\n";
+                            dataReader.NextResult();
+                        }
+                        dataReader.Dispose();
+                        TelegramBot.Instance.BotClient.EditMessageTextAsync(
+                            chatId: ChatId,
+                            messageId: WindowMessageId,
+                            text: "Тут должно быть заявки на пополнение",
+                            replyMarkup: new InlineKeyboardMarkup(buttons)
+                            );
+                    }
+
                     break;
                 case "BalanceWindow_DisplayFullListOfCurrencies":
-                    TelegramBot.Instance.BotClient.EditMessageTextAsync(
-                        chatId: ChatId,
-                        messageId: WindowMessageId,
-                        text: "Тут должно быть полный список валют",
-                        replyMarkup: new InlineKeyboardMarkup(buttons)
-                        );
+                    {
+                        LocalRuntimeDB.Instance.ExecuteReaderCommand(out MySqlDataReader dataReader,
+                                                         "GetFullBalance",
+                                                        ("ChatId", this.ChatId)
+                                                        );
+
+                        string result = String.Empty;
+
+                        while (dataReader.Read())
+                        {
+                            result += dataReader["ShortCoinName"].ToString() + "\t" + dataReader["Count"].ToString() + "\n";
+                            dataReader.NextResult();
+                        }
+                        dataReader.Dispose();
+
+
+                        TelegramBot.Instance.BotClient.EditMessageTextAsync(
+                            chatId: ChatId,
+                            messageId: WindowMessageId,
+                            text: "Баланс валют\n" + result,
+                            replyMarkup: new InlineKeyboardMarkup(buttons)
+                            );
+                    }
+
+                    
                     break;
                 case "BalanceWindow_ReplenishmentOfBalance":
                     TelegramBot.Instance.BotClient.EditMessageTextAsync(
@@ -112,9 +164,17 @@ namespace CryptoBotProject.Bot.Windows
         {
             int pastMessageId = WindowMessageId;
 
+            LocalRuntimeDB.Instance.ExecuteReaderCommand(out MySqlDataReader dataReader,
+                                                         "GetUSDTBalance",
+                                                        ("ChatId", this.ChatId)
+                                                        );
+            var usdtBalance = dataReader["USDT_Balance"].ToString();
+
+            dataReader.DisposeAsync();
+
             WindowMessageId = TelegramBot.Instance.BotClient.SendTextMessageAsync(
                 chatId: ChatId,
-                text: "Это окно с балансом",
+                text: "Баланс USDT: " + usdtBalance,
                 parseMode: ParseMode.Markdown,
                 replyMarkup: new InlineKeyboardMarkup(buttons)
                 ).Result.MessageId;
