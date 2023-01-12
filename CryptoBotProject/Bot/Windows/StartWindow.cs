@@ -7,12 +7,13 @@ namespace CryptoBotProject.Bot.Windows
 {
     class StartWindow : Window
     {
-        static InlineKeyboardButton[] buttons = 
+        static InlineKeyboardButton[][] buttons =
         {
-            InlineKeyboardButton.WithCallbackData("Баланс", "StartWindow_Balance"),
-            InlineKeyboardButton.WithCallbackData("Настройки", "StartWindow_Settings"),
-            InlineKeyboardButton.WithCallbackData("Информация", "StartWindow_FAQ"),
-            InlineKeyboardButton.WithCallbackData("Криптовалюты", "StartWindow_GetCryptoCoins")
+            new InlineKeyboardButton[] { InlineKeyboardButton.WithCallbackData("Баланс", "StartWindow_Balance") },
+            new InlineKeyboardButton[] { InlineKeyboardButton.WithCallbackData("Баланс", "StartWindow_Balance") },
+            new InlineKeyboardButton[] { InlineKeyboardButton.WithCallbackData("Настройки", "StartWindow_Settings") },
+            new InlineKeyboardButton[] { InlineKeyboardButton.WithCallbackData("Информация", "StartWindow_FAQ") },
+            new InlineKeyboardButton[] { InlineKeyboardButton.WithCallbackData("Криптовалюты", "StartWindow_GetCryptoCoins") }
         };
 
         public StartWindow(long chatId)
@@ -21,7 +22,7 @@ namespace CryptoBotProject.Bot.Windows
 
             WindowMessageId = TelegramBot.Instance.BotClient.SendTextMessageAsync(
                 chatId: chatId,
-                text: "Это стартовое окно",
+                text: "Выберите интересующее окно",
                 parseMode: ParseMode.Markdown,
                 replyMarkup: new InlineKeyboardMarkup(buttons)
                 ).Result.MessageId;
@@ -76,7 +77,7 @@ namespace CryptoBotProject.Bot.Windows
 
             WindowMessageId = TelegramBot.Instance.BotClient.SendTextMessageAsync(
             chatId: ChatId,
-            text: "Это стартовое окно",
+            text: "Выберите интересующее окно",
             parseMode: ParseMode.Markdown,
             replyMarkup: new InlineKeyboardMarkup(buttons)
             ).Result.MessageId;

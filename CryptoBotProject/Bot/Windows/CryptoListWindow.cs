@@ -24,7 +24,7 @@ namespace CryptoBotProject.Bot.Windows
 
             WindowMessageId = TelegramBot.Instance.BotClient.SendTextMessageAsync(
                 chatId: chatId,
-                text: $"Это окно криптовалют лист {debugCurentList}",
+                text: $"Список криптовалют {debugCurentList}",
                 parseMode: ParseMode.Markdown,
                 replyMarkup: GeneratekeyboardButtonList()
                 ).Result.MessageId;
