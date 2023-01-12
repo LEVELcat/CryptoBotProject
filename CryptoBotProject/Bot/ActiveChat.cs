@@ -33,8 +33,6 @@ namespace CryptoBotProject.Bot
             }
             T newWindow = (T)Activator.CreateInstance(typeof(T), new object[] {chatId});
             activeWindows.Add(newWindow);
-
-
         }
 
         private long chatId = -1;
