@@ -110,9 +110,9 @@ namespace CryptoBotProject.Bot.Windows
 
             WindowMessageId = TelegramBot.Instance.BotClient.SendTextMessageAsync(
                 chatId: ChatId,
-                text: "Это окно с балансом",
+                text: $"Это окно криптовалют лист {debugCurentList}",
                 parseMode: ParseMode.Markdown,
-                replyMarkup: new InlineKeyboardMarkup(buttons)
+                replyMarkup: GeneratekeyboardButtonList()
                 ).Result.MessageId;
 
             TelegramBot.Instance.BotClient.DeleteMessageAsync(ChatId, pastMessageId);
