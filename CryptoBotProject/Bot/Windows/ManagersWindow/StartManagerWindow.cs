@@ -45,10 +45,16 @@ namespace CryptoBotProject.Bot.Windows.ManagersWindow
             }
         }
 
-        public override void WindowsInteract(Update update)
+        public override async void WindowsInteract(Update update)
         {
             if (update.CallbackQuery is not CallbackQuery)
             {
+                return;
+            }
+
+            if (await LocalRuntimeDB.CheckModerRight(update.CallbackQuery.From.Username) == false)
+            {
+                //TODO: Make DeleteModer
                 return;
             }
 
