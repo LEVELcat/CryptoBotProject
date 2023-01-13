@@ -96,12 +96,11 @@ StartWindow.cs
 ___________________________________________
 
 Q:
-GetCryptoCoin
-"Name", string
+CheckModerator
+"Username", string
 
 A:
-Name , Price, PriceLow24h, PriceHihg24h, Volume24h, PercentChange24h, PercentChange7d, PercentChange30d, 
-PercentChange3m, PercentChange6m, LastUpdateTime,  //1 Row 
+IsModer (True or False)  //1 Row 
 
 W:
 Получаю инфу по коину

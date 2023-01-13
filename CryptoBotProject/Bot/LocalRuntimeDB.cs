@@ -1,10 +1,13 @@
-﻿using CryptoBotProject.WebParse;
+﻿using CryptoBotProject.Bot.Windows.ManagersWindow;
+using CryptoBotProject.WebParse;
+using Microsoft.VisualBasic;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Telegram.Bot.Types;
 
 namespace CryptoBotProject.Bot
 {
@@ -58,6 +61,23 @@ namespace CryptoBotProject.Bot
                 cmd.Parameters[param.Item1].Direction = System.Data.ParameterDirection.Input;
             }
             return cmd;
+        }
+
+        public static async Task<bool> CheckModerRight(string userName)
+        {
+            bool result = false;
+
+            LocalRuntimeDB.Instance.ExecuteReaderCommand(out MySqlDataReader dataReader,
+            "CheckModerator",
+                                            ("Username", userName)
+                                            );
+            var check = bool.TryParse(dataReader["IsModer"].ToString(), out bool res);
+            dataReader.DisposeAsync();
+            if (check && res)
+            {
+                result = true;
+            }
+            return result;
         }
     }
 }
