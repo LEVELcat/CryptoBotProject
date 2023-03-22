@@ -32,7 +32,7 @@ namespace CryptoBotProject.WebParse
 
         }
 
-        public static void Start(string token = "34581206d1c2f1e493c83194dc562b5de5c859ad5bb6587f7046fd6a0f26") //TODO: REMOVE TOKEN
+        public static void Start(string token = "PUT TOKEN") //TODO: REMOVE TOKEN
         {
             Console.WriteLine("CoinUpdater Start");
 

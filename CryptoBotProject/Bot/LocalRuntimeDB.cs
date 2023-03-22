@@ -43,7 +43,7 @@ namespace CryptoBotProject.Bot
             dataReader = BuildMySqlCommand(procedureName, parameters).ExecuteReader();
         }
 
-        MySqlConnection GetDBConnection(string host = "localhost", int port = 3306, string database = "brokebd", string username = "root", string password = "Hupihi48chiz666")
+        MySqlConnection GetDBConnection(string host = "localhost", int port = 3306, string database = "brokebd", string username = "root", string password = "")
         {
             String connString = $"Server={host};Database={database};port={port};User Id={username};password={password}";
             return new MySqlConnection(connString);
